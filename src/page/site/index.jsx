@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import Api from '@/tool/api'
+import Header from '@/coms/header'
 
 export default class Index extends Component {
   constructor (props) {
@@ -33,7 +34,10 @@ export default class Index extends Component {
       )
     }
     return (
-      <div className="outer home">{dom}</div>
+      <div className="outer home">
+        <Header title="网站首页"></Header>
+        {dom}
+      </div>
     )
   }
 }
