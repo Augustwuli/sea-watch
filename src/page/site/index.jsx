@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import Api from '@/tool/api'
 
 export default class Index extends Component {
   constructor (props) {
@@ -6,7 +7,9 @@ export default class Index extends Component {
     this.state = {}
   }
   componentDidMount () {
-
+    Api.get('topics', null, r => {
+      console.log(r)
+    })
   }
   render () {
     return (
