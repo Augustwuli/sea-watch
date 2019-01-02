@@ -25,10 +25,6 @@ html, body{
         font-size: 18px;
         color: #fff;
       }
-      .is-active{
-        color: #324157;
-        background: #eef1e6;
-      }
     }
   }
   #container{
@@ -36,6 +32,14 @@ html, body{
     left: 150px;
     width: calc(100% - 750px);
     height: 100%;
+    .BMapLabel{
+      line-height: 20px !important;
+      background-color: #0081FF !important;
+      color: #fff;
+      font-weight: bold !important;
+      border: none !important;
+      border-radius: 2px; 
+    }
   }
   .charts{
     position: absolute;

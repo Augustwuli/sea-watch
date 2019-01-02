@@ -116,7 +116,7 @@
       "react-app"
     ]
   },
-  "proxy": "https://cnodejs.org",
+  "proxy": "http://rap2api.taobao.org",
   "devDependencies": {
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0"

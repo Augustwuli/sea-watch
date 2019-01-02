@@ -1,4 +1,4 @@
-let root = '/api/v1'
+let root = '/app/mock/122958'
 let request = require('superagent')
 function dataType(data) { // 获取数据类型
   return ({}).toString.call(data).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
