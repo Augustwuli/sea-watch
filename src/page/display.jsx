@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
 import { Menu, Loading} from 'element-react'
 import 'element-theme-default'
-import echarts from 'echarts/lib/echarts'
 import Map from '@/coms/map'
+import Chart from '@/coms/chart'
 import Api from '@/tool/api'
 
-import 'echarts/lib/component/tooltip'
-import 'echarts/lib/component/title' 
-import 'echarts/lib/chart/bar'
 export default class Display extends Component {
   constructor (props) {
     super(props)
@@ -119,8 +116,10 @@ export default class Display extends Component {
         </Menu>
         {map}
         <div className="charts">
-          <div className="title">{}</div>
-          {/* <div id="content" style={{ width: 400, height: 400 }}></div> */}
+          <div className="title">{this.state.title}</div>
+          <div style={{marginTop:50+'px'}}></div>
+          <div className="subtitle">有效浪高</div>
+          <Chart></Chart>
         </div>
       </div>
     )
