@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu } from 'element-react'
+import { Menu, Loading} from 'element-react'
 import 'element-theme-default'
 import echarts from 'echarts/lib/echarts'
 import Map from '@/coms/map'
@@ -13,6 +13,8 @@ export default class Display extends Component {
     super(props)
     this.selectItem = this.selectItem.bind(this)
     this.state = {
+      loading: false,
+      title: '4号标 三天曲线过程',
       type: '1',
       list: [
         {
@@ -38,15 +40,21 @@ export default class Display extends Component {
   }
   selectItem (index,indexPath) {
     console.log('index'+index)
+    this.setState({
+      loading: false
+    },function(){
+      console.log(this.state.loading)
+    })
     let params = {
       type: '1'
     };
     Api.get('positions', params, r => {
       this.setState({
         list: r.data.list,
-        type: index
+        type: index,
+        loading: true
       },function(){
-        console.log('getdata'+this.state.list+this.state.type)
+        console.log('getdata'+this.state.list+this.state.type+this.state.loading)
       })
     })
     // this.setState({
@@ -61,9 +69,10 @@ export default class Display extends Component {
     };
     Api.get('positions', params, r => {
       this.setState({
-        list: r.data.list
+        list: r.data.list,
+        loading: true
       },function(){
-        console.log('getdata'+this.state.list)
+        console.log('getdata'+this.state.list,this.state.loading)
       })
     })
   }
@@ -71,22 +80,29 @@ export default class Display extends Component {
     this.getData()
   }
   componentDidMount () {
-    let myChart = echarts.init(document.getElementById('content'));
-    myChart.setOption({
-      title: { text: 'ECharts 入门示例' },
-      tooltip: {},
-      xAxis: {
-          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-      },
-      yAxis: {},
-      series: [{
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-      }]
-  });
+  //   let myChart = echarts.init(document.getElementById('content'));
+  //   myChart.setOption({
+  //     title: { text: 'ECharts 入门示例' },
+  //     tooltip: {},
+  //     xAxis: {
+  //         data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+  //     },
+  //     yAxis: {},
+  //     series: [{
+  //         name: '销量',
+  //         type: 'bar',
+  //         data: [5, 20, 36, 10, 10, 20]
+  //     }]
+  // });
   }
   render () {
+    let { loading } = this.state;
+    let map = null;
+    if (loading) {
+      map = <Map list={this.state.list} type={this.state.type}/>;
+    } else {
+      map = <Loading className="load" text="拼命加载中"/>;
+    }
     return (
       <div className="display-page">
         <Menu mode="vertical" theme="dark" onSelect={this.selectItem}>
@@ -101,9 +117,10 @@ export default class Display extends Component {
             <Menu.Item index="6">水温</Menu.Item>
           </Menu.ItemGroup>
         </Menu>
-        <Map list={this.state.list} type={this.state.type}></Map>
+        {map}
         <div className="charts">
-          <div id="content" style={{ width: 400, height: 400 }}></div>
+          <div className="title">{}</div>
+          {/* <div id="content" style={{ width: 400, height: 400 }}></div> */}
         </div>
       </div>
     )

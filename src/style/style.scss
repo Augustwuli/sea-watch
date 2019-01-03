@@ -15,15 +15,31 @@ html, body{
 .display-page{
   width: 100%;
   height: 100%;
+  .el-menu--dark{
+    background: #2563B0;
+  }
+  .load{
+    top: 300px;
+    right: 200px;
+  }
   .el-menu{
     position: absolute;
     width: 150px;
     height: 100%;
     border-radius: 0; 
     .el-menu-item-group{
+      .el-menu-item{
+        color: #fff;
+        background: #2076D6;
+      }
+      .el-menu-item:hover{
+        background: #F7e400;
+      }
       .el-menu-item-group__title{
         font-size: 18px;
         color: #fff;
+        height: 40px;
+        background: #2563B0;
       }
     }
   }
@@ -42,6 +58,7 @@ html, body{
     }
   }
   .charts{
+    border-left: 3px solid #0081FF;
     position: absolute;
     right: 0;
     width: 600px;
