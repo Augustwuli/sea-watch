@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Loading} from 'element-react'
+import { Menu, Loading, Table } from 'element-react'
 import 'element-theme-default'
 import Map from '@/coms/map'
 import Chart from '@/coms/chart'
@@ -10,6 +10,26 @@ export default class Display extends Component {
     super(props)
     this.selectItem = this.selectItem.bind(this)
     this.state = {
+      columns:[
+        {
+          label: '站点名称',
+          prop: 'name'
+        },
+        {
+          label: '平均风速',
+          prop: 'ava'
+        }
+      ],
+      data:[
+        {
+          name: '2号浮标',
+          ava: '2'
+        },
+        {
+          name: '2号浮标',
+          ava: '2'
+        }
+      ],
       loading: false,
       title: '4号标 三天曲线过程',
       type: '1',
@@ -118,8 +138,9 @@ export default class Display extends Component {
         <div className="charts">
           <div className="title">{this.state.title}</div>
           <div style={{marginTop:50+'px'}}></div>
-          <div className="subtitle">有效浪高</div>
-          <Chart></Chart>
+          {/* <div className="subtitle">有效浪高</div> */}
+          {/* <Chart></Chart> */}
+          <Table data={this.state.data} columns={this.state.columns} border="true" stripe="true"></Table>
         </div>
       </div>
     )
