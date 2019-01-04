@@ -4,34 +4,155 @@ import 'element-theme-default'
 import Map from '@/coms/map'
 import Chart from '@/coms/chart'
 import Api from '@/tool/api'
+import { util } from 'node-forge';
 
 export default class Display extends Component {
   constructor (props) {
     super(props)
     this.selectItem = this.selectItem.bind(this)
     this.state = {
+      name: '标题',
+      charts: [
+        {
+          title: '风速',
+          anchor: [
+            {
+              name:'2019/01/01 00:00:00',
+              value:['2019/01/01 00:00:00', 0]
+            },
+            {
+              name:'2019/01/03 12:00:00',
+              value:['2019/01/03 12:00:00', 0]
+            }
+          ],
+          unit: 'm/s',
+          lines: [{name:'平均风速',data:[{name:'2019/01/01 02:00:00', value:['2019/01/01 00:12:00', 15]},
+          {name:'2019/01/01 06:00:00', value:['2019/01/01 06:00:00', 10]},
+          {name:'2019/01/01 12:18:18', value:['2019/01/01 12:18:18', 20]},
+          {name:'2019/01/01 15:18:20', value:['2019/01/01 15:18:20', 10]},
+          {name:'2019/01/01 18:18:18', value:['2019/01/01 18:18:18', 12]},
+          {name:'2019/01/01 20:18:20', value:['2019/01/01 20:18:20', 10]},
+          {name:'2019/01/02 00:00:20', value:['2019/01/02 00:00:20', 15]},
+          {name:'2019/01/02 02:00:00', value:['2019/01/02 00:12:00', 15]},
+          {name:'2019/01/02 06:00:00', value:['2019/01/02 06:00:00', 10]},
+          {name:'2019/01/02 12:18:18', value:['2019/01/02 12:18:18', 20]},
+          {name:'2019/01/02 15:18:20', value:['2019/01/02 15:18:20', 10]},
+          {name:'2019/01/02 18:18:18', value:['2019/01/02 18:18:18', 12]},
+          {name:'2019/01/02 20:18:20', value:['2019/01/02 20:18:20', 10]}]},{name:'最大风速',data:[{name:'2019/01/01 02:00:00', value:['2019/01/01 00:12:00', 8]},
+          {name:'2019/01/01 06:00:00', value:['2019/01/01 06:00:00', 20]},
+          {name:'2019/01/01 12:18:18', value:['2019/01/01 12:18:18', 10]},
+          {name:'2019/01/01 15:18:20', value:['2019/01/01 15:18:20', 20]},
+          {name:'2019/01/01 18:18:18', value:['2019/01/01 18:18:18', 15]},
+          {name:'2019/01/01 20:18:20', value:['2019/01/01 20:18:20', 11]},
+          {name:'2019/01/02 00:00:20', value:['2019/01/02 00:00:20', 15]},
+          {name:'2019/01/02 02:00:00', value:['2019/01/02 00:12:00', 15]},
+          {name:'2019/01/02 06:00:00', value:['2019/01/02 06:00:00', 15]},
+          {name:'2019/01/02 12:18:18', value:['2019/01/02 12:18:18', 12]},
+          {name:'2019/01/02 15:18:20', value:['2019/01/02 15:18:20', 16]},
+          {name:'2019/01/02 18:18:18', value:['2019/01/02 18:18:18', 17]},
+          {name:'2019/01/02 20:18:20', value:['2019/01/02 20:18:20', 11]}]}]
+        },
+        {
+          title: '风速',
+          anchor: [
+            {
+              name:'2019/01/01 00:00:00',
+              value:['2019/01/01 00:00:00', 0]
+            },
+            {
+              name:'2019/01/03 12:00:00',
+              value:['2019/01/03 12:00:00', 0]
+            }
+          ],
+          unit: 'm/s',
+          lines: [{name:'平均风速',data:[{name:'2019/01/01 02:00:00', value:['2019/01/01 00:12:00', 15]},
+          {name:'2019/01/01 06:00:00', value:['2019/01/01 06:00:00', 10]},
+          {name:'2019/01/01 12:18:18', value:['2019/01/01 12:18:18', 20]},
+          {name:'2019/01/01 15:18:20', value:['2019/01/01 15:18:20', 10]},
+          {name:'2019/01/01 18:18:18', value:['2019/01/01 18:18:18', 12]},
+          {name:'2019/01/01 20:18:20', value:['2019/01/01 20:18:20', 10]},
+          {name:'2019/01/02 00:00:20', value:['2019/01/02 00:00:20', 15]},
+          {name:'2019/01/02 02:00:00', value:['2019/01/02 00:12:00', 15]},
+          {name:'2019/01/02 06:00:00', value:['2019/01/02 06:00:00', 10]},
+          {name:'2019/01/02 12:18:18', value:['2019/01/02 12:18:18', 20]},
+          {name:'2019/01/02 15:18:20', value:['2019/01/02 15:18:20', 10]},
+          {name:'2019/01/02 18:18:18', value:['2019/01/02 18:18:18', 12]},
+          {name:'2019/01/02 20:18:20', value:['2019/01/02 20:18:20', 10]}]},{name:'最大风速',data:[{name:'2019/01/01 02:00:00', value:['2019/01/01 00:12:00', 8]},
+          {name:'2019/01/01 06:00:00', value:['2019/01/01 06:00:00', 20]},
+          {name:'2019/01/01 12:18:18', value:['2019/01/01 12:18:18', 10]},
+          {name:'2019/01/01 15:18:20', value:['2019/01/01 15:18:20', 20]},
+          {name:'2019/01/01 18:18:18', value:['2019/01/01 18:18:18', 15]},
+          {name:'2019/01/01 20:18:20', value:['2019/01/01 20:18:20', 11]},
+          {name:'2019/01/02 00:00:20', value:['2019/01/02 00:00:20', 15]},
+          {name:'2019/01/02 02:00:00', value:['2019/01/02 00:12:00', 15]},
+          {name:'2019/01/02 06:00:00', value:['2019/01/02 06:00:00', 15]},
+          {name:'2019/01/02 12:18:18', value:['2019/01/02 12:18:18', 12]},
+          {name:'2019/01/02 15:18:20', value:['2019/01/02 15:18:20', 16]},
+          {name:'2019/01/02 18:18:18', value:['2019/01/02 18:18:18', 17]},
+          {name:'2019/01/02 20:18:20', value:['2019/01/02 20:18:20', 11]}]}]
+        }
+      ],
       columns:[
         {
           label: '站点名称',
           prop: 'name'
         },
         {
-          label: '平均风速',
+          label: '平均风速（m/s）',
           prop: 'ava'
+        },
+        {
+          label: '最大风速（m）',
+          prop: 'max'
+        },
+        {
+          label: '风向',
+          prop: 'direction'
+        },
+        {
+          label: '风力等级',
+          prop: 'scale'
+        },
+        {
+          label: '时间',
+          prop: 'date'
         }
       ],
       data:[
         {
           name: '2号浮标',
-          ava: '2'
+          ava: '2',
+          max: '5',
+          direction: '东北',
+          scale: '7',
+          date: '01/04 08:30'
         },
         {
           name: '2号浮标',
-          ava: '2'
-        }
+          ava: '2',
+          max: '5',
+          direction: '东北',
+          scale: '7',
+          date: '01/04 08:30'
+        },
+        {
+          name: '2号浮标',
+          ava: '2',
+          max: '5',
+          direction: '东北',
+          scale: '7',
+          date: '01/04 08:30'
+        },
+        {
+          name: '2号浮标',
+          ava: '2',
+          max: '5',
+          direction: '东北',
+          scale: '7',
+          date: '01/04 08:30'
+        },
       ],
       loading: false,
-      title: '4号标 三天曲线过程',
       type: '1',
       list: [
         {
@@ -57,34 +178,45 @@ export default class Display extends Component {
   }
   selectItem (index,indexPath) {
     console.log('index'+index)
-    this.setState({
-      loading: false
-    },function(){
-      console.log(this.state.loading)
-    })
-    let params = {
-      type: '1'
-    };
-    Api.get('positions', params, r => {
+    if (index === '1' || index === '2'){
       this.setState({
-        list: r.data.list,
-        type: index,
-        loading: true
+        loading: false
       },function(){
-        console.log('getdata'+this.state.list+this.state.type+this.state.loading)
+        console.log(this.state.loading)
       })
-    })
-    // this.setState({
-    //   type: index
-    // },() => {
-    //   console.log(this.state.type)
-    // })
+      let params = {
+        type: index
+      };
+      Api.get('flags', params, r => {
+        this.setState({
+          list: r.data.list,
+          type: index,
+          loading: true
+        },function(){
+          console.log('getdata'+this.state.list+this.state.type+this.state.loading)
+        })
+      })
+    } else {
+      let params = {
+        type: index
+      };
+      Api.get('factors', params, r => {
+        this.setState({
+          columns: r.data.table.columns,
+          type: index,
+          data: r.data.table.data,
+        },function(){
+          console.log('getdata'+this.state.columns+this.state.data+this.state.type);
+        })
+      })
+    }
+   
   }
   getData () {
     let params = {
       type: '1'
     };
-    Api.get('positions', params, r => {
+    Api.get('flags', params, r => {
       this.setState({
         list: r.data.list,
         loading: true
@@ -97,28 +229,25 @@ export default class Display extends Component {
     this.getData()
   }
   componentDidMount () {
-  //   let myChart = echarts.init(document.getElementById('content'));
-  //   myChart.setOption({
-  //     title: { text: 'ECharts 入门示例' },
-  //     tooltip: {},
-  //     xAxis: {
-  //         data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-  //     },
-  //     yAxis: {},
-  //     series: [{
-  //         name: '销量',
-  //         type: 'bar',
-  //         data: [5, 20, 36, 10, 10, 20]
-  //     }]
-  // });
   }
   render () {
-    let { loading } = this.state;
+    let { loading, charts } = this.state;
     let map = null;
+    let dom = null;
     if (loading) {
       map = <Map list={this.state.list} type={this.state.type}/>;
     } else {
       map = <Loading className="load" text="拼命加载中"/>;
+    }
+    if (charts.length !==0 ){
+      dom = charts.map((i,k)=>{
+        return (
+          <div className="chartInfo" key={k}>
+            <div className="subtitle">{i.title}</div>
+            <Chart id={`content${k}`} title={i.unit} anchor={i.anchor} lines={i.lines}></Chart>
+          </div>
+        )
+      })
     }
     return (
       <div className="display-page">
@@ -136,11 +265,11 @@ export default class Display extends Component {
         </Menu>
         {map}
         <div className="charts">
-          <div className="title">{this.state.title}</div>
+          <div className="title">{this.state.name}</div>
           <div style={{marginTop:50+'px'}}></div>
-          {/* <div className="subtitle">有效浪高</div> */}
-          {/* <Chart></Chart> */}
-          <Table data={this.state.data} columns={this.state.columns} border="true" stripe="true"></Table>
+          {dom}
+          {/* <Chart charts={this.state.charts}></Chart> */}
+          {/* <Table data={this.state.data} columns={this.state.columns} border="true" stripe="true"></Table> */}
         </div>
       </div>
     )

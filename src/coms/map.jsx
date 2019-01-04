@@ -28,6 +28,14 @@ export default class Map extends Component {
     let myIcon = new BMap.Icon("../image/big.png", new BMap.Size(24,24));
     if(type === '2'){
       myIcon = new BMap.Icon("../image/small.png", new BMap.Size(24,24));
+    } else if(type === '3') {
+      myIcon = new BMap.Icon("../image/wind.png", new BMap.Size(24,24));
+    } else if (type === '4') {
+      myIcon = new BMap.Icon("../image/wave.png", new BMap.Size(24,24));
+    }else if (type === '5') {
+      myIcon = new BMap.Icon("../image/temperature.png", new BMap.Size(24,24));
+    }else if (type === '6') {
+      myIcon = new BMap.Icon("../image/water.png", new BMap.Size(24,24));
     }
     if (list.length !==0 ){
       for (let i = 0;i < list.length;i++){
@@ -57,6 +65,14 @@ export default class Map extends Component {
     let myIcon = new BMap.Icon("../image/big.png", new BMap.Size(24,24));
     if(type === '2'){
       myIcon = new BMap.Icon("../image/small.png", new BMap.Size(24,24));
+    } else if(type === '3') {
+      myIcon = new BMap.Icon("../image/wind.png", new BMap.Size(24,24));
+    } else if (type === '4') {
+      myIcon = new BMap.Icon("../image/wave.png", new BMap.Size(24,24));
+    }else if (type === '5') {
+      myIcon = new BMap.Icon("../image/temperature.png", new BMap.Size(24,24));
+    }else if (type === '6') {
+      myIcon = new BMap.Icon("../image/water.png", new BMap.Size(24,24));
     }
     if (list.length !==0 ){
       for (let i = 0;i < list.length;i++){
@@ -73,7 +89,9 @@ export default class Map extends Component {
   }
   render () {
     return (
-      <div id="container"></div> 
+      <div className="map">
+        <div id="container"></div> 
+      </div>
     )
   }
 }
