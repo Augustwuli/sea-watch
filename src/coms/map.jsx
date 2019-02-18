@@ -1,22 +1,24 @@
 import React, { Component } from 'React'
 
 export default class Map extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      type: '1',
-      list: []
-    }
-  }
   componentDidMount () {
     this.initPoint()
   }
   componentWillReceiveProps(nextProps){
-    this.updatePoint(nextProps)
+    // this.updatePoint(nextProps)
   }
-   initPoint () {
+
+  shouldComponentUpdate(nextProps, nextState){
+  //   let { list } = this.props;
+  //   console.log(list);
+  //   console.log(nextProps.list);
+    return true;
+  //   //return false 则不更新组件
+  }
+
+  initPoint () {
     let { list, type} = this.props;
-    console.log(list,type)
+    // console.log(list,type)
     const { BMap } = window; 
     let map = new BMap.Map("container"); // 创建地图实例  
     let point = new BMap.Point(119.5239453291,25.1890781656); // 创建点坐标  
@@ -39,14 +41,15 @@ export default class Map extends Component {
     }
     if (list.length !==0 ){
       for (let i = 0;i < list.length;i++){
-        points[i] = new BMap.Point(list[i].long, list[i].lat);
+        points[i] = new BMap.Point(list[i].geometry.coordinates[0], list[i].geometry.coordinates[1]);
         marker[i] = new BMap.Marker(points[i], {icon:myIcon});  // 创建标注
         map.addOverlay(marker[i]);              // 将标注添加到地图中
-        let label = new BMap.Label(list[i].title, {offset:new BMap.Size(20,-10)});
+        let label = new BMap.Label(list[i].properties.stnm, {offset:new BMap.Size(20,-10)});
         marker[i].setLabel(label);
-        marker[i].addEventListener('click', (e) => {
-          console.log(e.target.getLabel().content)
-        }); 
+        marker[i].addEventListener("click",()=>{
+          let p = list[i];  //获取marker的位置
+          this.handPoint(p.id);
+        });
       }
     }
   }
@@ -76,17 +79,23 @@ export default class Map extends Component {
     }
     if (list.length !==0 ){
       for (let i = 0;i < list.length;i++){
-        points[i] = new BMap.Point(list[i].long, list[i].lat);
+        points[i] = new BMap.Point(list[i].geometry.coordinates[0], list[i].geometry.coordinates[1]);
         marker[i] = new BMap.Marker(points[i], {icon:myIcon});  // 创建标注
         map.addOverlay(marker[i]);              // 将标注添加到地图中
-        let label = new BMap.Label(list[i].title, {offset:new BMap.Size(20,-10)});
+        let label = new BMap.Label(list[i].properties.stnm, {offset:new BMap.Size(20,-10)});
         marker[i].setLabel(label);
-        marker[i].addEventListener('click', (e) => {
-          console.log(e.target.getLabel().content)
-        }); 
+        marker[i].addEventListener("click",()=>{
+          let p = list[i];  //获取marker的位置
+          this.handPoint(p.id);
+        });
       }
     }
   }
+
+  handPoint =(e)=> {
+    this.props.onPoint(e)
+  }
+
   render () {
     return (
       <div className="map">

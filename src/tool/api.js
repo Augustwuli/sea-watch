@@ -1,4 +1,4 @@
-let root = '/app/mock/122958'
+let root = '/SeaMonitor/api'
 let request = require('superagent')
 function dataType(data) { // 获取数据类型
   return ({}).toString.call(data).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
@@ -49,17 +49,28 @@ function ajaxAgent(method, url, params, success, failure) { // 发送请求并�
       }
     } else {
       // 这里的判断条件，需要和后端进行确认，这里使用的是 cnodejs.org 的规则
-      if (response.body.success === true) {
+      if(response.body){
         if (success) {
-          success(response.body, response) // rdata, res
-        }
-      } else {
-        if (failure) {
-          failure(response.body, response, 'STATUS_ERROR') // err:, res, esta
+            success(response.body, response) // rdata, res
         } else {
-          console.log(response.body.return_msg)
+          if (failure) {
+            failure(response.body, response, 'STATUS_ERROR') // err:, res, esta
+          } else {
+            console.log(response.body.return_msg)
+          }
         }
       }
+      // if (response.body.success === true) {
+      //   if (success) {
+      //     success(response.body, response) // rdata, res
+      //   }
+      // } else {
+      //   if (failure) {
+      //     failure(response.body, response, 'STATUS_ERROR') // err:, res, esta
+      //   } else {
+      //     console.log(response.body.return_msg)
+      //   }
+      // }
     }
   })
 }

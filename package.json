@@ -116,7 +116,7 @@
       "react-app"
     ]
   },
-  "proxy": "http://rap2api.taobao.org",
+  "proxy": "http://129.204.4.5:8080",
   "devDependencies": {
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0"
