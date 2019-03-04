@@ -43,6 +43,53 @@ html, body{
       }
     }
   }
+  .news{
+    width: calc(100% - 950px);
+    height: 30px;
+    line-height: 30px;
+    background: #fff;
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    left: calc(100% - 1300px);;
+    border-radius: 10px;
+    opacity:0.9;
+    padding: 10px 20px;
+    z-index: 2;
+  }
+  .bottom{
+    width: 130px;
+    height: 120px;
+    background:#fff;
+    position: absolute;
+    bottom: 40px;
+    left: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .mark{
+      width: 130px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      background: #2076D6;
+      color:#fff;
+    }
+    .detail{
+      .detail-block{
+        display: flex;
+        flex-direction: row;
+        justify-content:flex-start;
+        .detail-icon{
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: #0081FF;
+          margin:4px 5px 2px 0;
+        }
+      }
+    }
+  }
   #container{
     position: absolute;
     left: 150px;
@@ -50,11 +97,18 @@ html, body{
     height: 100%;
     .BMapLabel{
       line-height: 20px !important;
-      background-color: #0081FF !important;
       color: #fff;
       font-weight: bold !important;
-      border: none !important;
+      // border: none !important;
       border-radius: 2px; 
+    }
+  }
+  .wind{
+    .BMap_Marker{
+      label{
+        left: 0px !important;
+        top: 0px !important;
+      }
     }
   }
   .chart{

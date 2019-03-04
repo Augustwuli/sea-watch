@@ -6,7 +6,7 @@ import 'echarts/lib/component/title';
 import 'echarts/lib/component/toolbox';
 export default class Chart extends Component{
   initChart() {
-    let { title, lines, id} = this.props;
+    let { title, lines, id } = this.props;
     let myChart = echarts.init(document.getElementById(id));
     let datas = [];
     let legend = [];
@@ -20,7 +20,17 @@ export default class Chart extends Component{
           type: 'line',
           showSymbol: false,
           hoverAnimation: false,
-          data: datas[i]
+          data: datas[i],
+          markPoint: {
+            data: [
+                {type: 'max', name: '最大值'},
+            ]
+          },
+          markLine: {
+            data: [
+                {type: 'average', name: '平均值'}
+            ]
+          }
         }
       }
     }
@@ -87,7 +97,17 @@ export default class Chart extends Component{
           type: 'line',
           showSymbol: false,
           hoverAnimation: false,
-          data: datas[i]
+          data: datas[i],
+          markPoint: {
+            data: [
+                {type: 'max', name: '最大值'},
+            ]
+          },
+          markLine: {
+            data: [
+                {type: 'average', name: '平均值'}
+            ]
+          }
         }
       }
     }

@@ -10,67 +10,86 @@ export default class Display extends Component {
     super(props)
     this.selectItem = this.selectItem.bind(this)
     this.state = {
-      name: '标题',
-      columns:[
+      // longitude: 119.5239453291,
+      // latitude: 25.1890781656,
+      name: '4号标',
+      wcolumns:[
         {
           label: '站点名称',
-          prop: 'name'
+          prop: 'STNM'
         },
         {
           label: '平均风速（m/s）',
-          prop: 'ava'
+          prop: 'FS'
         },
         {
-          label: '最大风速（m）',
-          prop: 'max'
+          label: '最大风速（m/s）',
+          prop: 'ZDFS'
         },
         {
           label: '风向',
-          prop: 'direction'
+          prop: 'FX'
         },
         {
           label: '风力等级',
-          prop: 'scale'
+          prop: 'FL'
         },
         {
           label: '时间',
-          prop: 'date'
+          prop: 'TIMESTR'
         }
       ],
-      data:[
+      wecolumns:[
         {
-          name: '2号浮标',
-          ava: '2',
-          max: '5',
-          direction: '东北',
-          scale: '7',
-          date: '01/04 08:30'
+          label: '站点名称',
+          prop: 'STNM'
         },
         {
-          name: '2号浮标',
-          ava: '2',
-          max: '5',
-          direction: '东北',
-          scale: '7',
-          date: '01/04 08:30'
+          label: '有效波高（m）',
+          prop: 'YXBG'
         },
         {
-          name: '2号浮标',
-          ava: '2',
-          max: '5',
-          direction: '东北',
-          scale: '7',
-          date: '01/04 08:30'
+          label: '最大波高（m）',
+          prop: 'ZDBG'
         },
         {
-          name: '2号浮标',
-          ava: '2',
-          max: '5',
-          direction: '东北',
-          scale: '7',
-          date: '01/04 08:30'
+          label: '浪级',
+          prop: 'LJ'
         },
+        {
+          label: '时间',
+          prop: 'TIMESTR'
+        }
       ],
+      tcolumns:[
+        {
+          label: '站点名称',
+          prop: 'STNM'
+        },
+        {
+          label: '气温（℃）',
+          prop: 'QW'
+        },
+        {
+          label: '时间',
+          prop: 'TIMESTR'
+        }
+      ],
+      wtcolumns: [
+        {
+          label: '站点名称',
+          prop: 'STNM'
+        },
+        {
+          label: '水温（℃）',
+          prop: 'SW'
+        },
+        {
+          label: '时间',
+          prop: 'TIMESTR'
+        }
+      ],
+      data:[],
       loading: false,
       type: '1',
       list: [],
@@ -104,6 +123,7 @@ export default class Display extends Component {
           list: r.m_data.features,
           type: '1',
           loading: true,
+          name: '4号标'
         },function(){
           console.log('getdata'+this.state)
         })
@@ -113,7 +133,7 @@ export default class Display extends Component {
         flag: "get_stcds",
         itype: "小浮标"
       };
-      Api.post('floatManage/findBigFloat', params, r => {
+      Api.post('floatManage/findCommon', params, r => {
         this.setState({
           list: r.m_data.features,
           type: '2',
@@ -122,21 +142,64 @@ export default class Display extends Component {
           console.log('getdata'+this.state)
         })
       })
-    } else {
+    } else if (index === '3') {
       let params = {
-        type: index
+        flag: "Get_EmNewDATA",
+        itype: "wind"
       };
-      Api.get('factors', params, r => {
+      Api.post('floatManage/findCommon', params, r => {
         this.setState({
-          columns: r.data.table.columns,
-          type: index,
-          data: r.data.table.data,
+          list: r.tb_data,
+          type: '3',
+          loading: true,
         },function(){
-          console.log('getdata'+this.state.columns+this.state.data+this.state.type);
+          console.log('getdata'+this.state)
+        })
+      })
+    }else if (index === '4') {
+      let params = {
+        flag: "Get_EmNewDATA",
+        itype: "wave"
+      };
+      Api.post('floatManage/findCommon', params, r => {
+        this.setState({
+          list: r.tb_data,
+          type: '4',
+          loading: true,
+        },function(){
+          console.log('getdata'+this.state)
+        })
+      })
+    }else if (index === '5') {
+      let params = {
+        flag: "Get_EmNewDATA",
+        itype: "temp"
+      };
+      Api.post('floatManage/findCommon', params, r => {
+        this.setState({
+          list: r.tb_data,
+          type: '5',
+          loading: true,
+        },function(){
+          console.log('getdata'+this.state)
         })
       })
     }
-   
+    else if (index === '6') {
+      let params = {
+        flag: "Get_EmNewDATA",
+        itype: "water"
+      };
+      Api.post('floatManage/findCommon', params, r => {
+        this.setState({
+          list: r.tb_data,
+          type: '6',
+          loading: true,
+        },function(){
+          console.log('getdata'+this.state)
+        })
+      })
+    }
   }
   getData () {
     let params = {
@@ -389,37 +452,72 @@ export default class Display extends Component {
   componentDidMount () {
   }
 
-  handPoint =(e)=> {
+  clickRow =(row) =>{
     let {type} = this.state;
-    console.log(e)
+    this.setState({
+      name: row.STNM,
+      // longitude: row.LON,
+      // latitude: row.LAT
+    }, function(){
+      console.log(this.state.name)
+    })
+    if (type === '3'){
+      this.getWLine(row.STCD, "get_emlines", row.PARENT_TYPE)
+    } else if (type === '4'){
+      this.getWeLine(row.STCD, "get_emlines", row.PARENT_TYPE)
+    } else if (type === '5'){
+      this.getTLine(row.STCD, "get_emlines", row.PARENT_TYPE)
+    } else if (type === '6'){
+      this.getWTLine(row.STCD, "get_emlines", row.PARENT_TYPE)
+    }
+  }
+
+  handPoint =(e,name,itype)=> {
+    let {type} = this.state;
+    this.setState({
+      name: name
+    },function(){
+      console.log(this.state.name)
+    })
     if(type === '1'){
-      this.getWLine(e, "get_emlines", "大浮标")  //风速
-      this.getWeLine(e, "get_emlines", "大浮标") //浪高
-      this.getTLine(e, "get_emlines", "大浮标")  //气温
-      this.getWTLine(e, "get_emlines", "大浮标") //水温
-      this.getPLine(e, "get_emlines", "大浮标")  //气压
+      this.getWLine(e, "get_emlines", itype)  //风速
+      this.getWeLine(e, "get_emlines", itype) //浪高
+      this.getTLine(e, "get_emlines", itype)  //气温
+      this.getWTLine(e, "get_emlines", itype) //水温
+      this.getPLine(e, "get_emlines", itype)  //气压
     } else if (type === '2'){
-      this.getWLine(e, "get_emlines", "浮标")
-      this.getWeLine(e, "get_emlines", "浮标")
-      this.getTLine(e, "get_emlines", "浮标")
-      this.getWTLine(e, "get_emlines", "浮标")
-      this.getPLine(e, "get_emlines", "浮标")
+      this.getWLine(e, "get_emlines", itype)
+      this.getWeLine(e, "get_emlines", itype)
+      this.getTLine(e, "get_emlines", itype)
+      this.getWTLine(e, "get_emlines", itype)
+      this.getPLine(e, "get_emlines", itype)
       this.getSLine(e)
       this.getPHLine(e)
       this.getOLine(e)
       this.getTuLine(e)
       this.getCHLine(e)
+    } else if (type === '3'){
+      this.getWLine(e, "get_emlines", itype)
+    } else if (type === '4'){
+      this.getWeLine(e, "get_emlines", itype)
+    } else if (type === '5'){
+      this.getTLine(e, "get_emlines", itype)
+    } else if (type === '6'){
+      this.getWTLine(e, "get_emlines", itype)
     }
   }
   render () {
     let { loading, wline, weline, tline, wtline, pline, sline, phline, oline, tuline, chline, type} = this.state;
     let map = null;
     let dom = null;
+    let table = null;
+    let title = null;
     if (loading) {
-      map = <Map list={this.state.list} type={this.state.type} onPoint={this.handPoint}/>;
+      map = <Map list={this.state.list} type={this.state.type} onPoint={this.handPoint} />;
     } else {
       map = <Loading className="load" text="拼命加载中"/>;
     }
+    title = <div className="title">{this.state.name} 曲线过程</div>;
     if (type === '1'){
       dom = 
         <div>
@@ -445,7 +543,6 @@ export default class Display extends Component {
           </div>
         </div>      
     } else if (type === '2') {
-      console.log('我在这')
       dom = 
         <div>
           <div className="chartInfo">
@@ -489,6 +586,36 @@ export default class Display extends Component {
             <Chart id={`content10`} title={'hPa'} lines={chline}></Chart>
           </div>
         </div>
+    } else if (type === '3') {
+      table = 
+      <div>
+        <Table onRowClick={this.clickRow} data={this.state.list} columns={this.state.wcolumns} maxHeight="300" border={true} stripe={true}></Table>
+        <p style={{fontSize: 20 + 'px',textAlign: 'center'}}>三天实测风速曲线图【{this.state.name}】</p>
+        <Chart id='charts' title={'m/s'} lines={wline}></Chart>
+      </div>
+      title = <div className="title">最新数据</div>
+    } else if (type === '4') {
+      table = 
+      <div>
+        <Table onRowClick={this.clickRow} data={this.state.list} columns={this.state.wecolumns} maxHeight="300" border={true} stripe={true}></Table>
+        <p style={{fontSize: 20 + 'px',textAlign: 'center'}}>三天实测波高曲线图【{this.state.name}】</p>
+        <Chart id='charts' title={'m'} lines={weline}></Chart>
+      </div>
+      title = <div className="title">最新数据</div>
+    } else if (type === '5') {
+      table = 
+      <div>
+        <Table onRowClick={this.clickRow} data={this.state.list} columns={this.state.tcolumns} maxHeight="300" border={true} stripe={true}></Table>
+        <p style={{fontSize: 20 + 'px',textAlign: 'center'}}>三天实测气温曲线图【{this.state.name}】</p>
+        <Chart id='charts' title={'℃'} lines={tline}></Chart>
+      </div>
+    } else if (type === '6') {
+      table = 
+      <div>
+        <Table onRowClick={this.clickRow} data={this.state.list} columns={this.state.wtcolumns} maxHeight="300" border={true} stripe={true}></Table>
+        <p style={{fontSize: 20 + 'px',textAlign: 'center'}}>三天实测水温曲线图【{this.state.name}】</p>
+        <Chart id='charts' title={'℃'} lines={wtline}></Chart>
+      </div>
     }
 
 
@@ -506,13 +633,13 @@ export default class Display extends Component {
             <Menu.Item index="6">水温</Menu.Item>
           </Menu.ItemGroup>
         </Menu>
+        <div className="news">新闻：泉州海事联合地方部门现场拆除2艘海上非法载客船只 <a href="http://www.cnss.com.cn/html/2019/news_management_0228/324647.html">点此查看</a></div>
         {map}
         <div className="charts">
-          <div className="title">{this.state.name}</div>
+          {title}
           <div style={{marginTop:50+'px'}}></div>
           {dom}
-          {/* <Chart charts={this.state.charts}></Chart> */}
-          <Table data={this.state.data} columns={this.state.columns} border={true} stripe={true}></Table>
+          {table}
         </div>
       </div>
     )
